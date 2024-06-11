@@ -3,13 +3,18 @@ import {ScrollView, Text, View, StyleSheet} from 'react-native';
 import axios from 'axios';
 import BoxContent from '../../Componentes/BoxContents';
 import {BIBLIA_API_KEY} from '@env';
+import HamburgerMenu from '../../Componentes/HambuguerMenu';
 export default function Home() {
   const [books, setBooks] = useState([]);
   useEffect(() => {
     axios
-      .get(`https://api.biblia.com/v1/bible/contents/LEB?key=${BIBLIA_API_KEY}`)
+      .get('https://www.abibliadigital.com.br/api/books', {
+        headers: {
+          Authorization: `Bearer ${BIBLIA_API_KEY}`,
+        },
+      })
       .then(response => {
-        setBooks(response.data.books);
+        setBooks(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -18,16 +23,16 @@ export default function Home() {
   return (
     <ScrollView>
       <View>
+        <HamburgerMenu />
         <Text style={styles.title}>
           Bem vindo ao app da biblia!! Escolha um dos livros abaixo
         </Text>
         <View style={styles.gridContainer}>
           {books.map(book => (
             <BoxContent
-              key={book.passage}
+              key={book.name}
               content={{
-                name: book.passage,
-                quantity: book.chapters.length,
+                book: book,
               }}
               style={styles.boxContent}
             />
@@ -48,7 +53,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     marginBottom: 10,
-    marginTop: 10,
+    marginTop: 70,
     color: 'black',
   },
   gridContainer: {

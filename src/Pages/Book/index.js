@@ -1,27 +1,29 @@
 import React from 'react';
 import {View, StyleSheet, Text, FlatList, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import bookNames from '../../Componentes/bookNames';
+import HamburgerMenu from '../../Componentes/HambuguerMenu';
+
 export default function Book({route}) {
   const navigation = useNavigation();
   const {content} = route.params;
   const chapters = Array.from(
-    {length: content.quantity},
+    {length: content.book.chapters},
     (_, index) => index + 1,
   );
 
   const openChapter = chapter => {
     navigation.navigate('Chapter', {
-      name: content.name,
+      name: content.book.name,
       chapter: chapter,
+      abbrev: content.book.abbrev,
     });
   };
-  const bookNameInPortuguese = bookNames[content.name] || content.name;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{bookNameInPortuguese}</Text>
-      <Text style={styles.description}>{content.quantity} Capitulos</Text>
+      <HamburgerMenu />
+      <Text style={styles.title}>{content.book.name}</Text>
+      <Text style={styles.description}>{content.book.chapters} Capitulos</Text>
       <FlatList
         data={chapters}
         numColumns={4}
