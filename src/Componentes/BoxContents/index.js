@@ -10,12 +10,12 @@ export default function BoxContent({content, style}) {
       content: content,
     });
   };
-  const bookNameInPortuguese = bookNames[content.name] || content.name;
+  //const bookNameInPortuguese = bookNames[content.name] || content.name;
   return (
     <View style={[styles.container, style]}>
       <Image source={require('../../Assets/biblia.png')} style={styles.image} />
-      <Text style={styles.name}>{bookNameInPortuguese}</Text>
-      <Text style={styles.quantity}>{content.quantity} capitulos</Text>
+      <Text style={styles.name}>{content.book.name}</Text>
+      <Text style={styles.quantity}>{content.book.quantity} capitulos</Text>
       <TouchableOpacity style={styles.button} onPress={readBook}>
         <Text style={styles.buttonText}>Ler</Text>
       </TouchableOpacity>
