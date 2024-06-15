@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, FlatList, TouchableOpacity} from 'react-native';
-
 import Tts from 'react-native-tts';
 import {BIBLIA_API_KEY} from '@env';
-import OptionsMenu from '../../Componentes/OptionsMenu'; // Import the new OptionsMenu component
+import OptionsMenu from '../../Componentes/OptionsMenu';
 import HamburgerMenu from '../../Componentes/HambuguerMenu';
 import BooksHandleRequestGet from '../../Componentes/HandleRequest/BooksHandleRequestGet';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+
 export default function Chapter({route}) {
   const {name, chapter, abbrev} = route.params;
   const [verses, setVerses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [voices, setVoices] = useState([]);
   const [fontSize, setFontSize] = useState(16);
   const [optionsVisible, setOptionsVisible] = useState(false);
@@ -16,9 +18,11 @@ export default function Chapter({route}) {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const link = `https://www.abibliadigital.com.br/api/verses/nvi/${abbrev.pt}/${chapter}`;
       const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
       setVerses(result.verses);
+      setLoading(false);
     };
 
     fetchData();
@@ -71,13 +75,11 @@ export default function Chapter({route}) {
   };
 
   const handleVersionChange = version => async () => {
-    const fetchData = async () => {
-      const link = `https://www.abibliadigital.com.br/api/verses/${version}/${abbrev.pt}/${chapter}`;
-      const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
-      setVerses(result.verses);
-    };
-
-    fetchData();
+    setLoading(true);
+    const link = `https://www.abibliadigital.com.br/api/verses/${version}/${abbrev.pt}/${chapter}`;
+    const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
+    setVerses(result.verses);
+    setLoading(false);
   };
 
   const increaseFontSize = () => {
@@ -118,13 +120,35 @@ export default function Chapter({route}) {
       />
       <Text style={styles.title}>{name}</Text>
       <Text style={styles.description}>Capítulo {chapter}</Text>
-
-      <FlatList
-        data={verses}
-        keyExtractor={item => item.number.toString()}
-        renderItem={renderVerse}
-        contentContainerStyle={styles.versesContainer}
-      />
+      {loading ? (
+        <SkeletonPlaceholder>
+          <SkeletonPlaceholder.Item
+            marginBottom={10}
+            height={30}
+            width="100%"
+            borderRadius={5}
+          />
+          <SkeletonPlaceholder.Item
+            marginBottom={10}
+            height={30}
+            width="100%"
+            borderRadius={5}
+          />
+          <SkeletonPlaceholder.Item
+            marginBottom={10}
+            height={30}
+            width="100%"
+            borderRadius={5}
+          />
+        </SkeletonPlaceholder>
+      ) : (
+        <FlatList
+          data={verses}
+          keyExtractor={item => item.number.toString()}
+          renderItem={renderVerse}
+          contentContainerStyle={styles.versesContainer}
+        />
+      )}
     </View>
   );
 }

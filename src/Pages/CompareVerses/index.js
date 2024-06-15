@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import HamburgerMenu from '../../Componentes/HambuguerMenu';
 import {BIBLIA_API_KEY} from '@env';
 import {Picker} from '@react-native-picker/picker';
@@ -21,12 +22,15 @@ export default function CompareVerses() {
   const [selectedTranslation2, setSelectedTranslation2] = useState('acf');
   const [verseText1, setVerseText1] = useState('');
   const [verseText2, setVerseText2] = useState('');
+  const [loadingBooks, setLoadingBooks] = useState(true);
+  const [loadingVerses, setLoadingVerses] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const link = 'https://www.abibliadigital.com.br/api/books';
       const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
       setBooks(result);
+      setLoadingBooks(false);
     };
 
     fetchData();
@@ -34,10 +38,12 @@ export default function CompareVerses() {
 
   const fetchVerseText = (book, chapter, verse, translation, setText) => {
     if (book && chapter && verse && translation) {
+      setLoadingVerses(true);
       const fetchData = async () => {
         const link = `https://www.abibliadigital.com.br/api/verses/${translation}/${book}/${chapter}/${verse}`;
         const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
         setText(result.text);
+        setLoadingVerses(false);
       };
 
       fetchData();
@@ -68,66 +74,87 @@ export default function CompareVerses() {
       <View style={styles.container}>
         <HamburgerMenu />
         <Text style={styles.title}>Comparar os versículos</Text>
-        <View style={styles.pickerContainer}>
-          <Text style={styles.label}>Livro:</Text>
-          <Picker
-            selectedValue={selectedBook}
-            style={styles.picker}
-            onValueChange={itemValue => setSelectedBook(itemValue)}>
-            {books.map(book => (
-              <Picker.Item
-                key={book.abbrev.pt}
-                label={book.name}
-                value={book.abbrev.pt}
+        {loadingBooks ? (
+          <SkeletonPlaceholder>
+            <View style={styles.skeletonPicker} />
+            <View style={styles.skeletonInput} />
+            <View style={styles.skeletonInput} />
+            <View style={styles.skeletonPicker} />
+            <View style={styles.skeletonPicker} />
+          </SkeletonPlaceholder>
+        ) : (
+          <>
+            <View style={styles.pickerContainer}>
+              <Text style={styles.label}>Livro:</Text>
+              <Picker
+                selectedValue={selectedBook}
+                style={styles.picker}
+                onValueChange={itemValue => setSelectedBook(itemValue)}>
+                {books.map(book => (
+                  <Picker.Item
+                    key={book.abbrev.pt}
+                    label={book.name}
+                    value={book.abbrev.pt}
+                  />
+                ))}
+              </Picker>
+              <TextInput
+                style={styles.input}
+                placeholder="Capítulo"
+                keyboardType="numeric"
+                value={selectedChapter}
+                onChangeText={setSelectedChapter}
               />
-            ))}
-          </Picker>
-          <TextInput
-            style={styles.input}
-            placeholder="Capítulo"
-            keyboardType="numeric"
-            value={selectedChapter}
-            onChangeText={setSelectedChapter}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Versículo"
-            keyboardType="numeric"
-            value={selectedVerse}
-            onChangeText={setSelectedVerse}
-          />
-        </View>
-        <View style={styles.pickerContainer}>
-          <Text style={styles.label}>Tradução 1:</Text>
-          <Picker
-            selectedValue={selectedTranslation1}
-            style={styles.picker}
-            onValueChange={itemValue => setSelectedTranslation1(itemValue)}>
-            <Picker.Item label="NVI" value="nvi" />
-            <Picker.Item label="ACF" value="acf" />
-            <Picker.Item label="ARA" value="ra" />
-          </Picker>
-          <Text style={styles.label}>Tradução 2:</Text>
-          <Picker
-            selectedValue={selectedTranslation2}
-            style={styles.picker}
-            onValueChange={itemValue => setSelectedTranslation2(itemValue)}>
-            <Picker.Item label="NVI" value="nvi" />
-            <Picker.Item label="ACF" value="acf" />
-            <Picker.Item label="ARA" value="ra" />
-          </Picker>
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleCompare}>
-          <Text style={styles.buttonText}>Comparar</Text>
-        </TouchableOpacity>
-        <View style={styles.verseContainer}>
-          <Text style={styles.verseTitle}>Versículo (Tradução 1):</Text>
-          <Text style={styles.verseText}>{verseText1}</Text>
-        </View>
-        <View style={styles.verseContainer}>
-          <Text style={styles.verseTitle}>Versículo (Tradução 2):</Text>
-          <Text style={styles.verseText}>{verseText2}</Text>
-        </View>
+              <TextInput
+                style={styles.input}
+                placeholder="Versículo"
+                keyboardType="numeric"
+                value={selectedVerse}
+                onChangeText={setSelectedVerse}
+              />
+            </View>
+            <View style={styles.pickerContainer}>
+              <Text style={styles.label}>Tradução 1:</Text>
+              <Picker
+                selectedValue={selectedTranslation1}
+                style={styles.picker}
+                onValueChange={itemValue => setSelectedTranslation1(itemValue)}>
+                <Picker.Item label="NVI" value="nvi" />
+                <Picker.Item label="ACF" value="acf" />
+                <Picker.Item label="ARA" value="ra" />
+              </Picker>
+              <Text style={styles.label}>Tradução 2:</Text>
+              <Picker
+                selectedValue={selectedTranslation2}
+                style={styles.picker}
+                onValueChange={itemValue => setSelectedTranslation2(itemValue)}>
+                <Picker.Item label="NVI" value="nvi" />
+                <Picker.Item label="ACF" value="acf" />
+                <Picker.Item label="ARA" value="ra" />
+              </Picker>
+            </View>
+            <TouchableOpacity style={styles.button} onPress={handleCompare}>
+              <Text style={styles.buttonText}>Comparar</Text>
+            </TouchableOpacity>
+            {loadingVerses ? (
+              <SkeletonPlaceholder>
+                <View style={styles.skeletonVerse} />
+                <View style={styles.skeletonVerse} />
+              </SkeletonPlaceholder>
+            ) : (
+              <>
+                <View style={styles.verseContainer}>
+                  <Text style={styles.verseTitle}>Versículo (Tradução 1):</Text>
+                  <Text style={styles.verseText}>{verseText1}</Text>
+                </View>
+                <View style={styles.verseContainer}>
+                  <Text style={styles.verseTitle}>Versículo (Tradução 2):</Text>
+                  <Text style={styles.verseText}>{verseText2}</Text>
+                </View>
+              </>
+            )}
+          </>
+        )}
       </View>
     </ScrollView>
   );
@@ -195,5 +222,23 @@ const styles = StyleSheet.create({
   },
   verseText: {
     fontSize: 16,
+  },
+  skeletonPicker: {
+    height: 50,
+    width: '100%',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  skeletonInput: {
+    height: 40,
+    width: '100%',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  skeletonVerse: {
+    height: 50,
+    width: '100%',
+    borderRadius: 5,
+    marginTop: 10,
   },
 });
