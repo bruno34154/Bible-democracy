@@ -16,6 +16,7 @@ export default function Book({route}) {
       name: content.book.name,
       chapter: chapter,
       abbrev: content.book.abbrev,
+      chapters: content.book.chapters,
     });
   };
 

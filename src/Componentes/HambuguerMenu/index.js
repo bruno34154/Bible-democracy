@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     right: 20,
-    zIndex: 10, // Ensures the menu is on top of other content
+    zIndex: 10,
   },
   hamburgerButton: {
     backgroundColor: '#D43C12',
