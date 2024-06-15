@@ -13,7 +13,7 @@ export default function BoxContent({content, style}) {
     <View style={[styles.container, style]}>
       <Image source={require('../../Assets/biblia.png')} style={styles.image} />
       <Text style={styles.name}>{content.book.name}</Text>
-      <Text style={styles.quantity}>{content.book.quantity} capitulos</Text>
+      <Text style={styles.quantity}>{content.book.chapters} capitulos</Text>
       <TouchableOpacity style={styles.button} onPress={readBook}>
         <Text style={styles.buttonText}>Ler</Text>
       </TouchableOpacity>
@@ -23,7 +23,7 @@ export default function BoxContent({content, style}) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    padding: 2,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
