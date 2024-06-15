@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import bookNames from '../bookNames';
 export default function BoxContent({content, style}) {
   const navigate = useNavigation();
 
@@ -10,7 +9,6 @@ export default function BoxContent({content, style}) {
       content: content,
     });
   };
-  //const bookNameInPortuguese = bookNames[content.name] || content.name;
   return (
     <View style={[styles.container, style]}>
       <Image source={require('../../Assets/biblia.png')} style={styles.image} />

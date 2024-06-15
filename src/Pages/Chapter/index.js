@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, FlatList, TouchableOpacity} from 'react-native';
-import axios from 'axios';
+
 import Tts from 'react-native-tts';
 import {BIBLIA_API_KEY} from '@env';
 import OptionsMenu from '../../Componentes/OptionsMenu'; // Import the new OptionsMenu component
 import HamburgerMenu from '../../Componentes/HambuguerMenu';
+import BooksHandleRequestGet from '../../Componentes/HandleRequest/BooksHandleRequestGet';
 export default function Chapter({route}) {
   const {name, chapter, abbrev} = route.params;
   const [verses, setVerses] = useState([]);
@@ -14,23 +15,13 @@ export default function Chapter({route}) {
   const disponibleVersion = ['acf', 'nvi', 'ra'];
 
   useEffect(() => {
-    const fetchVerses = async () => {
-      try {
-        const response = await axios.get(
-          `https://www.abibliadigital.com.br/api/verses/nvi/${abbrev.pt}/${chapter}`,
-          {
-            headers: {
-              Authorization: `Bearer ${BIBLIA_API_KEY}`,
-            },
-          },
-        );
-        setVerses(response.data.verses);
-      } catch (e) {
-        console.log('erro', e);
-      }
+    const fetchData = async () => {
+      const link = `https://www.abibliadigital.com.br/api/verses/nvi/${abbrev.pt}/${chapter}`;
+      const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
+      setVerses(result.verses);
     };
 
-    fetchVerses();
+    fetchData();
   }, [abbrev.pt, chapter]);
 
   useEffect(() => {
@@ -80,19 +71,13 @@ export default function Chapter({route}) {
   };
 
   const handleVersionChange = version => async () => {
-    try {
-      const response = await axios.get(
-        `https://www.abibliadigital.com.br/api/verses/${version}/${abbrev.pt}/${chapter}`,
-        {
-          headers: {
-            Authorization: `Bearer ${BIBLIA_API_KEY}`,
-          },
-        },
-      );
-      setVerses(response.data.verses);
-    } catch (e) {
-      console.log('erro', e);
-    }
+    const fetchData = async () => {
+      const link = `https://www.abibliadigital.com.br/api/verses/${version}/${abbrev.pt}/${chapter}`;
+      const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
+      setVerses(result.verses);
+    };
+
+    fetchData();
   };
 
   const increaseFontSize = () => {
