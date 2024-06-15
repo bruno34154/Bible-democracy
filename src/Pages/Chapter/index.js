@@ -6,9 +6,10 @@ import OptionsMenu from '../../Componentes/OptionsMenu';
 import HamburgerMenu from '../../Componentes/HambuguerMenu';
 import BooksHandleRequestGet from '../../Componentes/HandleRequest/BooksHandleRequestGet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import ChapterNavigation from '../../Componentes/ChapterNavigation';
 
-export default function Chapter({route}) {
-  const {name, chapter, abbrev} = route.params;
+export default function Chapter({route, navigation}) {
+  const {name, chapter, abbrev, chapters} = route.params;
   const [verses, setVerses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [voices, setVoices] = useState([]);
@@ -106,6 +107,37 @@ export default function Chapter({route}) {
     </View>
   );
 
+  const handlePreviousChapter = () => {
+    if (chapter > 1) {
+      navigation.push('Chapter', {
+        name,
+        chapter: chapter - 1,
+        abbrev,
+        chapters,
+      });
+    }
+  };
+
+  const handleNextChapter = () => {
+    if (chapter < chapters) {
+      navigation.push('Chapter', {
+        name,
+        chapter: chapter + 1,
+        abbrev,
+        chapters,
+      });
+    }
+  };
+
+  const handleSelectChapter = selectedChapter => {
+    navigation.push('Chapter', {
+      name,
+      chapter: selectedChapter,
+      abbrev,
+      chapters,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <HamburgerMenu />
@@ -149,6 +181,13 @@ export default function Chapter({route}) {
           contentContainerStyle={styles.versesContainer}
         />
       )}
+      <ChapterNavigation
+        onPrevious={handlePreviousChapter}
+        onNext={handleNextChapter}
+        onSelectChapter={handleSelectChapter}
+        currentChapter={chapter}
+        totalChapters={chapters}
+      />
     </View>
   );
 }

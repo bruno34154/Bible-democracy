@@ -17,7 +17,6 @@ export default function BoxContent({content, style}) {
       <TouchableOpacity style={styles.button} onPress={readBook}>
         <Text style={styles.buttonText}>Ler</Text>
       </TouchableOpacity>
-      {/* Adicione outros detalhes do espaço conforme necessário */}
     </View>
   );
 }
@@ -30,10 +29,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   image: {
-    width: 100, // ajuste conforme necessário
-    height: 100, // ajuste conforme necessário
-    resizeMode: 'contain', // ajusta a imagem dentro do espaço definido sem distorção
-    marginBottom: 10, // espaço entre a imagem e o texto abaixo
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+    marginBottom: 10,
   },
   name: {
     fontWeight: 'bold',
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
-    marginTop: 10, // espaço entre o texto e o botão
+    marginTop: 10,
     width: 100,
   },
   buttonText: {
