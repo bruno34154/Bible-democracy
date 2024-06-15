@@ -1,24 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, Text, View, StyleSheet} from 'react-native';
-import axios from 'axios';
 import BoxContent from '../../Componentes/BoxContents';
 import {BIBLIA_API_KEY} from '@env';
 import HamburgerMenu from '../../Componentes/HambuguerMenu';
+import BooksHandleRequestGet from '../../Componentes/HandleRequest/BooksHandleRequestGet';
 export default function Home() {
   const [books, setBooks] = useState([]);
   useEffect(() => {
-    axios
-      .get('https://www.abibliadigital.com.br/api/books', {
-        headers: {
-          Authorization: `Bearer ${BIBLIA_API_KEY}`,
-        },
-      })
-      .then(response => {
-        setBooks(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    const fetchData = async () => {
+      const link = 'https://www.abibliadigital.com.br/api/books';
+      const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
+      setBooks(result);
+    };
+
+    fetchData();
   }, []);
   return (
     <ScrollView>

@@ -4,6 +4,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../Pages/Home/home';
 import Book from '../Pages/Book';
 import Chapter from '../Pages/Chapter';
+import CompareVerses from '../Pages/CompareVerses';
+import HamburgerMenu from '../Componentes/HambuguerMenu';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +26,11 @@ function Router() {
         <Stack.Screen
           name="Chapter"
           component={Chapter}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CompareVerses"
+          component={CompareVerses}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

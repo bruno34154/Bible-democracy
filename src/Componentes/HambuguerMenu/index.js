@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-const HamburgerMenu = ({compareVerses}) => {
+const HamburgerMenu = () => {
   const [menuVisible, setMenuVisible] = useState(false);
-
+  const navigate = useNavigation();
+  const compareVerses = () => {
+    navigate.navigate('CompareVerses');
+  };
   const toggleMenuVisibility = () => {
     setMenuVisible(!menuVisible);
   };
@@ -20,7 +24,11 @@ const HamburgerMenu = ({compareVerses}) => {
           <TouchableOpacity style={styles.menuItem} onPress={compareVerses}>
             <Text style={styles.menuItemText}>Comparar Versículos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem} onPress={compareVerses}>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => {
+              console.log('localizar igrejas');
+            }}>
             <Text style={styles.menuItemText}>Localizar Igrejas</Text>
           </TouchableOpacity>
         </View>
