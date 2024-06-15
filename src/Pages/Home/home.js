@@ -1,38 +1,52 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, Text, View, StyleSheet} from 'react-native';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import BoxContent from '../../Componentes/BoxContents';
 import {BIBLIA_API_KEY} from '@env';
 import HamburgerMenu from '../../Componentes/HambuguerMenu';
 import BooksHandleRequestGet from '../../Componentes/HandleRequest/BooksHandleRequestGet';
+
 export default function Home() {
   const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       const link = 'https://www.abibliadigital.com.br/api/books';
       const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
       setBooks(result);
+      setLoading(false);
     };
 
     fetchData();
   }, []);
+
   return (
     <ScrollView>
-      <View>
+      <View style={styles.container}>
         <HamburgerMenu />
         <Text style={styles.title}>
           Bem vindo ao app da biblia!! Escolha um dos livros abaixo
         </Text>
-        <View style={styles.gridContainer}>
-          {books.map(book => (
-            <BoxContent
-              key={book.name}
-              content={{
-                book: book,
-              }}
-              style={styles.boxContent}
-            />
-          ))}
-        </View>
+        {loading ? (
+          <SkeletonPlaceholder>
+            <View style={styles.gridContainer}>
+              {[...Array(6)].map((_, index) => (
+                <View key={index} style={styles.skeletonBoxContent} />
+              ))}
+            </View>
+          </SkeletonPlaceholder>
+        ) : (
+          <View style={styles.gridContainer}>
+            {books.map(book => (
+              <BoxContent
+                key={book.name}
+                content={{book}}
+                style={styles.boxContent}
+              />
+            ))}
+          </View>
+        )}
       </View>
     </ScrollView>
   );
@@ -59,6 +73,12 @@ const styles = StyleSheet.create({
   },
   boxContent: {
     width: '30%', // Adjust the width to ensure two items per row with space between
+    marginBottom: 10,
+  },
+  skeletonBoxContent: {
+    width: '30%',
+    height: 150, // Adjust the height as needed
+    borderRadius: 5,
     marginBottom: 10,
   },
 });
