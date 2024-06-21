@@ -24,7 +24,7 @@ A inspiração para este aplicativo vem do desejo de tornar a palavra de Deus ma
 
 - **Dicionário Bíblico**: Verificação do significado das palavras difíceis de entender.
 - **Compartilhar versiculos**: permitir o usuario compartilhar versiculos nas redes sociais.
-- **Compartilhar versiculos**: permitir o usuario compartilhar localizar igrejas perto de sua residencia.
+- **localizar igrejas**: permitir o usuario localizar igrejas perto de sua residencia.
 - **Anotações e Posts da Comunidade**: Funcionalidade para que a comunidade cristã possa fazer posts e anotações para melhor entendimento do que está escrito.
 
 ## Tecnologias Utilizadas
