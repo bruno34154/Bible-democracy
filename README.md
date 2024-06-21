@@ -1,79 +1,43 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Aplicativo da Bíblia
 
-# Getting Started
+Bem-vindo ao repositório do Aplicativo da Bíblia! Este projeto é uma iniciativa empolgante com o objetivo de democratizar o estudo bíblico, tornando-o acessível para todos, independentemente do nível de alfabetização.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Motivação
 
-## Step 1: Start the Metro Server
+A inspiração para este aplicativo vem do desejo de tornar a palavra de Deus mais acessível. Inspirado pelo movimento pentecostal e eventos históricos como o avivamento da Rua Azusa, este projeto busca promover a inclusão e a compreensão da Bíblia por meio de tecnologias modernas.
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Funcionalidades
 
-To start Metro, run the following command from the _root_ of your React Native project:
+### Funcionalidades Atuais
 
-```bash
-# using npm
-npm start
+- **Texto Bíblico**: Acesso ao texto completo da Bíblia.
 
-# OR using Yarn
-yarn start
-```
+- **Diferentes traduções da Biblia**: Atualmente o aplicativo conta com trés versõe da biblia ACF, ARA E NVI.
 
-## Step 2: Start your Application
+- **Áudio dos Versículos**: Áudio dos versículos para pessoas que não sabem ler.
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+- **Comparar Versículos**: É possivel comparar um mesmo versiculo lado a lado em diferentes versões.
 
-### For Android
+- **Customizar texto**: É possivel customizar o texto como aumentar e diminuir para dar acebilidade a pessoas com problemas de visão.
 
-```bash
-# using npm
-npm run android
+### Funcionalidades Futuras
 
-# OR using Yarn
-yarn android
-```
+- **Dicionário Bíblico**: Verificação do significado das palavras difíceis de entender.
+- **Compartilhar versiculos**: permitir o usuario compartilhar versiculos nas redes sociais.
+- **Compartilhar versiculos**: permitir o usuario compartilhar localizar igrejas perto de sua residencia.
+- **Anotações e Posts da Comunidade**: Funcionalidade para que a comunidade cristã possa fazer posts e anotações para melhor entendimento do que está escrito.
 
-### For iOS
+## Tecnologias Utilizadas
 
-```bash
-# using npm
-npm run ios
+- **React-Native**
 
-# OR using Yarn
-yarn ios
-```
+- **APIs Externas**: Uso de APIs externas para fazer as requisições do texto bíblico com a API. API utilizada: [ABíbliaDigital](https://www.abibliadigital.com.br/).
+- **Futuras Implementações de API**: Pretendemos criar nossa própria API com base de dados feitas por missionários.
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Contribuindo
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+Estamos abertos a sugestões e colaborações. Se você tiver ideias ou quiser contribuir de alguma forma, fique à vontade para entrar em contato.
 
-## Step 3: Modifying your App
+## Contato
 
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Para mais informações ou para compartilhar sugestões, entre em contato conosco (disponivel no perfil os contatos).
