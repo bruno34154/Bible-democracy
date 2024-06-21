@@ -9,6 +9,7 @@ export default async function BooksHandleRequestGet(link, token) {
     });
     return response.data;
   } catch (e) {
-    return `erro ${e}`;
+    console.error(e);
+    return { error: `erro ${e}` };
   }
 }

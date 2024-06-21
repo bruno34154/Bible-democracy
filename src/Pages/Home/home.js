@@ -14,8 +14,10 @@ export default function Home() {
     const fetchData = async () => {
       const link = 'https://www.abibliadigital.com.br/api/books';
       const result = await BooksHandleRequestGet(link, BIBLIA_API_KEY);
-      setBooks(result);
-      setLoading(false);
+      if (!result?.error) {
+        setBooks(result);
+        setLoading(false);
+      }
     };
 
     fetchData();
