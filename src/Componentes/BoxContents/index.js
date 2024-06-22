@@ -27,6 +27,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   image: {
     width: 100,
