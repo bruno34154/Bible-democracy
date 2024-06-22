@@ -1,6 +1,11 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import Animated, {
+  BounceIn,
+  SlideInRight,
+  SlideOutRight,
+} from 'react-native-reanimated';
 
 const HamburgerMenu = () => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -20,18 +25,25 @@ const HamburgerMenu = () => {
         <Text style={styles.hamburgerButtonText}>☰</Text>
       </TouchableOpacity>
       {menuVisible && (
-        <View style={styles.menuContainer}>
-          <TouchableOpacity style={styles.menuItem} onPress={compareVerses}>
-            <Text style={styles.menuItemText}>Comparar Versículos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => {
-              console.log('localizar igrejas');
-            }}>
-            <Text style={styles.menuItemText}>Localizar Igrejas</Text>
-          </TouchableOpacity>
-        </View>
+        <Animated.View
+          key={'HamburgerMenu'}
+          style={styles.menuContainer}
+          entering={SlideInRight.duration(500)}
+          exiting={SlideOutRight.duration(500)}>
+          <Animated.View entering={BounceIn.delay(300)} style={styles.menuItem}>
+            <TouchableOpacity onPress={compareVerses}>
+              <Text style={styles.menuItemText}>Comparar Versículos</Text>
+            </TouchableOpacity>
+          </Animated.View>
+          <Animated.View entering={BounceIn.delay(500)} style={styles.menuItem}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log('localizar igrejas');
+              }}>
+              <Text style={styles.menuItemText}>Localizar Igrejas</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </Animated.View>
       )}
     </View>
   );
