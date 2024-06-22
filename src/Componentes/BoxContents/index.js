@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Animated, {FadeInLeft, FadeOutRight} from 'react-native-reanimated';
+import Animated, {FadeInLeft, FadeOut} from 'react-native-reanimated';
 
 export default function BoxContent({content, style, index}) {
   const navigate = useNavigation();
@@ -19,7 +19,7 @@ export default function BoxContent({content, style, index}) {
         .springify()
         .damping(8)
         .delay(index * 100)}
-      exiting={FadeOutRight}>
+      exiting={FadeOut.duration(300)}>
       <Image source={require('../../Assets/biblia.png')} style={styles.image} />
       <Text style={styles.name}>{content.book.name}</Text>
       <Text style={styles.quantity}>{content.book.chapters} capitulos</Text>
