@@ -40,11 +40,12 @@ export default function Home() {
           </SkeletonPlaceholder>
         ) : (
           <View style={styles.gridContainer}>
-            {books.map(book => (
+            {books.map((book, index) => (
               <BoxContent
                 key={book.name}
                 content={{book}}
                 style={styles.boxContent}
+                index={index}
               />
             ))}
           </View>

@@ -1,7 +1,9 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-export default function BoxContent({content, style}) {
+import Animated, {FadeInLeft, FadeOutRight} from 'react-native-reanimated';
+
+export default function BoxContent({content, style, index}) {
   const navigate = useNavigation();
 
   const readBook = () => {
@@ -9,15 +11,22 @@ export default function BoxContent({content, style}) {
       content: content,
     });
   };
+
   return (
-    <View style={[styles.container, style]}>
+    <Animated.View
+      style={[styles.container, style]}
+      entering={FadeInLeft.duration(700)
+        .springify()
+        .damping(8)
+        .delay(index * 100)}
+      exiting={FadeOutRight}>
       <Image source={require('../../Assets/biblia.png')} style={styles.image} />
       <Text style={styles.name}>{content.book.name}</Text>
       <Text style={styles.quantity}>{content.book.chapters} capitulos</Text>
       <TouchableOpacity style={styles.button} onPress={readBook}>
         <Text style={styles.buttonText}>Ler</Text>
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 }
 
