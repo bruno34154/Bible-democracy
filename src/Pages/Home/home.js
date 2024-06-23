@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, Text, View, StyleSheet} from 'react-native';
+import {ScrollView, Text, View, StyleSheet, TextInput} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import BoxContent from '../../Componentes/BoxContents';
 import {BIBLIA_API_KEY} from '@env';
@@ -9,6 +9,8 @@ import BooksHandleRequestGet from '../../Componentes/HandleRequest/BooksHandleRe
 export default function Home() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,6 +25,20 @@ export default function Home() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
+
+  const filteredBooks = books.filter(book =>
+    book.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()),
+  );
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -30,6 +46,12 @@ export default function Home() {
         <Text style={styles.title}>
           Bem vindo ao app da biblia!! Escolha um dos livros abaixo
         </Text>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar livro..."
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+        />
         {loading ? (
           <SkeletonPlaceholder>
             <View style={styles.gridContainer}>
@@ -40,7 +62,7 @@ export default function Home() {
           </SkeletonPlaceholder>
         ) : (
           <View style={styles.gridContainer}>
-            {books.map((book, index) => (
+            {filteredBooks.map((book, index) => (
               <BoxContent
                 key={book.name}
                 content={{book}}
@@ -67,6 +89,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 70,
     color: 'black',
+  },
+  searchInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
   },
   gridContainer: {
     display: 'flex',
