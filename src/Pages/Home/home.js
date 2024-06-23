@@ -42,7 +42,7 @@ export default function Home() {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <HamburgerMenu />
+        <HamburgerMenu showBackButton={false} />
         <Text style={styles.title}>
           Bem vindo ao app da biblia!! Escolha um dos livros abaixo
         </Text>
