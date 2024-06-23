@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Animated, {
   BounceIn,
@@ -7,7 +7,7 @@ import Animated, {
   SlideOutRight,
 } from 'react-native-reanimated';
 
-const HamburgerMenu = () => {
+const HamburgerMenu = ({showBackButton = true}) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const navigate = useNavigation();
   const compareVerses = () => {
@@ -16,14 +16,27 @@ const HamburgerMenu = () => {
   const toggleMenuVisibility = () => {
     setMenuVisible(!menuVisible);
   };
+  const goBack = () => {
+    navigate.goBack();
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.hamburgerButton}
-        onPress={toggleMenuVisibility}>
-        <Text style={styles.hamburgerButtonText}>☰</Text>
-      </TouchableOpacity>
+      <View style={styles.appBar}>
+        {showBackButton && (
+          <TouchableOpacity style={styles.backButton} onPress={goBack}>
+            <Image
+              source={require('../../Assets/anterior.png')}
+              style={styles.backButtonImage}
+            />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={styles.hamburgerButton}
+          onPress={toggleMenuVisibility}>
+          <Text style={styles.hamburgerButtonText}>☰</Text>
+        </TouchableOpacity>
+      </View>
       {menuVisible && (
         <Animated.View
           key={'HamburgerMenu'}
@@ -63,6 +76,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
+    alignItems: 'flex-end',
+    width: '100%',
+  },
+  appBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
+  backButtonImage: {
+    width: 40,
+    height: 40,
   },
   hamburgerButton: {
     backgroundColor: '#D43C12',
@@ -86,6 +111,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
     elevation: 1,
     zIndex: 10,
+    width: '80%',
   },
   menuItem: {
     paddingVertical: 10,
