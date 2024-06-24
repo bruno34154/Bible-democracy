@@ -6,6 +6,11 @@ import {BIBLIA_API_KEY} from '@env';
 import HamburgerMenu from '../../Componentes/HambuguerMenu';
 import BooksHandleRequestGet from '../../Componentes/HandleRequest/BooksHandleRequestGet';
 
+// Função para remover acentos de uma string
+const removeAccents = str => {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+};
+
 export default function Home() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +41,9 @@ export default function Home() {
   }, [searchTerm]);
 
   const filteredBooks = books.filter(book =>
-    book.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()),
+    removeAccents(book.name.toLowerCase()).includes(
+      removeAccents(debouncedSearchTerm.toLowerCase()),
+    ),
   );
 
   return (
