@@ -7,6 +7,7 @@ import HamburgerMenu from '../../Componentes/HambuguerMenu';
 import BooksHandleRequestGet from '../../Componentes/HandleRequest/BooksHandleRequestGet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ChapterNavigation from '../../Componentes/ChapterNavigation';
+import WordMenu from '../../Componentes/WordMenu'; // Importar o componente WordMenu
 
 export default function Chapter({route, navigation}) {
   const {name, chapter, abbrev, chapters} = route.params;
@@ -15,6 +16,11 @@ export default function Chapter({route, navigation}) {
   const [voices, setVoices] = useState([]);
   const [fontSize, setFontSize] = useState(16);
   const [optionsVisible, setOptionsVisible] = useState(false);
+  const [markedWords, setMarkedWords] = useState({});
+  const [selectedWord, setSelectedWord] = useState({
+    verse: null,
+    wordIndex: null,
+  });
   const disponibleVersion = ['acf', 'nvi', 'ra'];
 
   useEffect(() => {
@@ -97,15 +103,30 @@ export default function Chapter({route, navigation}) {
     setOptionsVisible(!optionsVisible);
   };
 
-  const renderVerse = ({item}) => (
-    <View style={styles.verseContainer}>
-      <Text style={styles.verseNumber}>{item.number}</Text>
-      <Text style={[styles.verseText, {fontSize}]}>{item.text}</Text>
-      <TouchableOpacity onPress={() => speakVerse(item.text)}>
-        <Text style={styles.speakButton}>🔊</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  const toggleMarkWord = (verseNumber, wordIndex) => {
+    setMarkedWords(prevMarkedWords => {
+      const currentMarks = prevMarkedWords[verseNumber] || [];
+      if (currentMarks.includes(wordIndex)) {
+        return {
+          ...prevMarkedWords,
+          [verseNumber]: currentMarks.filter(index => index !== wordIndex),
+        };
+      } else {
+        return {
+          ...prevMarkedWords,
+          [verseNumber]: [...currentMarks, wordIndex],
+        };
+      }
+    });
+  };
+
+  const openWordMenu = (verseNumber, wordIndex, text) => {
+    setSelectedWord({verse: verseNumber, wordIndex, text: text});
+  };
+
+  const closeWordMenu = () => {
+    setSelectedWord({verse: null, wordIndex: null, text: null});
+  };
 
   const handlePreviousChapter = () => {
     if (chapter > 1) {
@@ -141,6 +162,8 @@ export default function Chapter({route, navigation}) {
   return (
     <View style={styles.container}>
       <HamburgerMenu />
+      <Text style={styles.title}>{name}</Text>
+      <Text style={styles.description}>Capítulo {chapter}</Text>
       <OptionsMenu
         disponibleVersion={disponibleVersion}
         handleVersionChange={handleVersionChange}
@@ -150,34 +173,57 @@ export default function Chapter({route, navigation}) {
         optionsVisible={optionsVisible}
         toggleOptionsVisibility={toggleOptionsVisibility}
       />
-      <Text style={styles.title}>{name}</Text>
-      <Text style={styles.description}>Capítulo {chapter}</Text>
+      <WordMenu
+        isVisible={
+          selectedWord.verse !== null && selectedWord.wordIndex !== null
+        }
+        onClose={closeWordMenu}
+        onMarkWord={() => {
+          toggleMarkWord(selectedWord.verse, selectedWord.wordIndex);
+        }}
+        text={selectedWord.text}
+      />
       {loading ? (
         <SkeletonPlaceholder>
-          <SkeletonPlaceholder.Item
-            marginBottom={10}
-            height={30}
-            width="100%"
-            borderRadius={5}
-          />
-          <SkeletonPlaceholder.Item
-            marginBottom={10}
-            height={30}
-            width="100%"
-            borderRadius={5}
-          />
-          <SkeletonPlaceholder.Item
-            marginBottom={10}
-            height={30}
-            width="100%"
-            borderRadius={5}
-          />
+          {[...Array(3)].map((_, index) => (
+            <SkeletonPlaceholder.Item
+              key={index}
+              marginBottom={10}
+              height={30}
+              width="100%"
+              borderRadius={5}
+            />
+          ))}
         </SkeletonPlaceholder>
       ) : (
         <FlatList
           data={verses}
           keyExtractor={item => item.number.toString()}
-          renderItem={renderVerse}
+          renderItem={({item}) => (
+            <View style={styles.verseContainer}>
+              <Text style={styles.verseNumber}>{item.number}</Text>
+              <View style={styles.verseTextContainer}>
+                {item.text.split(' ').map((word, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      const arrayPhrase = item.text.split(' ');
+                      openWordMenu(item.number, index, arrayPhrase[index]);
+                    }}
+                    style={styles.wordContainer}>
+                    <Text
+                      style={
+                        markedWords[item.number]?.includes(index)
+                          ? styles.markedWord
+                          : styles.unmarkedWord
+                      }>
+                      {word}{' '}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          )}
           contentContainerStyle={styles.versesContainer}
         />
       )}
@@ -231,12 +277,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
     color: '#D43C12',
   },
-  verseText: {
-    flex: 1,
+  verseTextContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
-  speakButton: {
-    marginLeft: 10,
-    fontSize: 20,
-    color: '#007AFF',
+  wordContainer: {
+    flexDirection: 'row',
+  },
+  markedWord: {
+    backgroundColor: '#D43C12',
+  },
+  unmarkedWord: {
+    backgroundColor: 'transparent',
   },
 });

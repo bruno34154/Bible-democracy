@@ -10,6 +10,6 @@ export default async function BooksHandleRequestGet(link, token) {
     return response.data;
   } catch (e) {
     console.error(e);
-    return { error: `erro ${e}` };
+    return {error: `erro ${e}`};
   }
 }
