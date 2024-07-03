@@ -5,7 +5,7 @@ import Home from '../Pages/Home/home';
 import Book from '../Pages/Book';
 import Chapter from '../Pages/Chapter';
 import CompareVerses from '../Pages/CompareVerses';
-import HamburgerMenu from '../Componentes/HambuguerMenu';
+import About from '../Pages/About';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +31,11 @@ function Router() {
         <Stack.Screen
           name="CompareVerses"
           component={CompareVerses}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="About"
+          component={About}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

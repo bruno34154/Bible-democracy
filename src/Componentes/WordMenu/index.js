@@ -48,7 +48,7 @@ const WordMenu = ({isVisible, onClose, onMarkWord, text}) => {
           <TouchableOpacity
             style={styles.menuItem}
             onPress={handleOpenLink(
-              `https://www.google.com/search?q=meaning+of+${encodeURIComponent(
+              `https://www.google.com/search?q=significado+de+${encodeURIComponent(
                 text,
               )}`,
             )}>
@@ -60,7 +60,7 @@ const WordMenu = ({isVisible, onClose, onMarkWord, text}) => {
           <TouchableOpacity
             style={styles.menuItem}
             onPress={handleOpenLink(
-              `https://www.google.com/search?q=synonyms+for+${encodeURIComponent(
+              `https://www.google.com/search?q=sinonimos+para+${encodeURIComponent(
                 text,
               )}`,
             )}>
