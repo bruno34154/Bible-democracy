@@ -6,12 +6,16 @@ import Animated, {
   SlideInRight,
   SlideOutRight,
 } from 'react-native-reanimated';
+import About from '../../Pages/About';
 
 const HamburgerMenu = ({showBackButton = true}) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const navigate = useNavigation();
   const compareVerses = () => {
     navigate.navigate('CompareVerses');
+  };
+  const about = () => {
+    navigate.navigate('About');
   };
   const toggleMenuVisibility = () => {
     setMenuVisible(!menuVisible);
@@ -49,11 +53,8 @@ const HamburgerMenu = ({showBackButton = true}) => {
             </TouchableOpacity>
           </Animated.View>
           <Animated.View entering={BounceIn.delay(500)} style={styles.menuItem}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('localizar igrejas');
-              }}>
-              <Text style={styles.menuItemText}>Localizar Igrejas</Text>
+            <TouchableOpacity onPress={about}>
+              <Text style={styles.menuItemText}>Contribua com o projeto</Text>
             </TouchableOpacity>
           </Animated.View>
         </Animated.View>

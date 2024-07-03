@@ -34,11 +34,6 @@ const OptionsMenu = ({
               </TouchableOpacity>
             ))}
           </View>
-          <TouchableOpacity
-            style={styles.speakButtonContainer}
-            onPress={speakChapter}>
-            <Text style={styles.speakButtonText}>🔊 LER CAPÍTULO</Text>
-          </TouchableOpacity>
           <Text style={styles.title}>Tamanho da fonte</Text>
           <View style={styles.fontSizeButtonsContainer}>
             <TouchableOpacity

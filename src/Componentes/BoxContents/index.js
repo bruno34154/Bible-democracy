@@ -20,7 +20,10 @@ export default function BoxContent({content, style, index}) {
         .damping(8)
         .delay(index * 100)}
       exiting={FadeOut.duration(300)}>
-      <Image source={require('../../Assets/biblia.png')} style={styles.image} />
+      <Image
+        source={require('../../Assets/biblia-sagrada.png')}
+        style={styles.image}
+      />
       <Text style={styles.name}>{content.book.name}</Text>
       <Text style={styles.quantity}>{content.book.chapters} capitulos</Text>
       <TouchableOpacity style={styles.button} onPress={readBook}>

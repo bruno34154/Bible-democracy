@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, FlatList, TouchableOpacity} from 'react-native';
-import Tts from 'react-native-tts';
 import {BIBLIA_API_KEY} from '@env';
 import OptionsMenu from '../../Componentes/OptionsMenu';
 import HamburgerMenu from '../../Componentes/HambuguerMenu';
 import BooksHandleRequestGet from '../../Componentes/HandleRequest/BooksHandleRequestGet';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ChapterNavigation from '../../Componentes/ChapterNavigation';
-import WordMenu from '../../Componentes/WordMenu'; // Importar o componente WordMenu
+import WordMenu from '../../Componentes/WordMenu';
+import ChapterPlayer from '../../Componentes/ChapterPlayer';
 
 export default function Chapter({route, navigation}) {
   const {name, chapter, abbrev, chapters} = route.params;
   const [verses, setVerses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [voices, setVoices] = useState([]);
   const [fontSize, setFontSize] = useState(16);
   const [optionsVisible, setOptionsVisible] = useState(false);
   const [markedWords, setMarkedWords] = useState({});
@@ -34,52 +33,6 @@ export default function Chapter({route, navigation}) {
 
     fetchData();
   }, [abbrev.pt, chapter]);
-
-  useEffect(() => {
-    const fetchVoices = async () => {
-      try {
-        const status = await Tts.getInitStatus();
-        if (status === 'success') {
-          Tts.setDefaultLanguage('pt-BR');
-          const availableVoices = await Tts.voices();
-          setVoices(availableVoices);
-          const portugueseVoice = availableVoices.find(
-            voice => voice.language === 'pt-BR' && voice.quality === 'high',
-          );
-          if (portugueseVoice) {
-            Tts.setDefaultVoice(portugueseVoice.id);
-          }
-        }
-      } catch (e) {
-        console.error('Error fetching voices', e);
-      }
-    };
-
-    fetchVoices();
-  }, []);
-
-  const speakVerse = text => {
-    Tts.stop();
-    Tts.speak(text, {
-      androidParams: {
-        KEY_PARAM_PAN: 0,
-        KEY_PARAM_VOLUME: 1,
-        KEY_PARAM_STREAM: 'STREAM_MUSIC',
-      },
-    });
-  };
-
-  const speakChapter = () => {
-    const chapterText = verses.map(verse => verse.text).join(' ');
-    Tts.stop();
-    Tts.speak(chapterText, {
-      androidParams: {
-        KEY_PARAM_PAN: 0,
-        KEY_PARAM_VOLUME: 1,
-        KEY_PARAM_STREAM: 'STREAM_MUSIC',
-      },
-    });
-  };
 
   const handleVersionChange = version => async () => {
     setLoading(true);
@@ -167,11 +120,11 @@ export default function Chapter({route, navigation}) {
       <OptionsMenu
         disponibleVersion={disponibleVersion}
         handleVersionChange={handleVersionChange}
-        speakChapter={speakChapter}
         increaseFontSize={increaseFontSize}
         decreaseFontSize={decreaseFontSize}
         optionsVisible={optionsVisible}
         toggleOptionsVisibility={toggleOptionsVisibility}
+        verses={verses}
       />
       <WordMenu
         isVisible={
@@ -201,7 +154,9 @@ export default function Chapter({route, navigation}) {
           keyExtractor={item => item.number.toString()}
           renderItem={({item}) => (
             <View style={styles.verseContainer}>
-              <Text style={styles.verseNumber}>{item.number}</Text>
+              <Text style={[styles.verseNumber, {fontSize}]}>
+                {item.number}
+              </Text>
               <View style={styles.verseTextContainer}>
                 {item.text.split(' ').map((word, index) => (
                   <TouchableOpacity
@@ -212,11 +167,12 @@ export default function Chapter({route, navigation}) {
                     }}
                     style={styles.wordContainer}>
                     <Text
-                      style={
+                      style={[
                         markedWords[item.number]?.includes(index)
                           ? styles.markedWord
-                          : styles.unmarkedWord
-                      }>
+                          : styles.unmarkedWord,
+                        {fontSize},
+                      ]}>
                       {word}{' '}
                     </Text>
                   </TouchableOpacity>
@@ -227,6 +183,7 @@ export default function Chapter({route, navigation}) {
           contentContainerStyle={styles.versesContainer}
         />
       )}
+      <ChapterPlayer verses={verses} />
       <ChapterNavigation
         onPrevious={handlePreviousChapter}
         onNext={handleNextChapter}
