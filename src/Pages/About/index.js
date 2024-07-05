@@ -31,7 +31,7 @@ export default function About() {
         através da nossa vaquinha.
       </Text>
       <TouchableOpacity
-        onPress={() => handleLinkPress('LINK_PARA_A_VAQUINHA')}
+        onPress={() => handleLinkPress('https://www.vakinha.com.br/4929281')}
         style={styles.linkContainer}>
         <Text style={styles.link}>Apoie o Projeto</Text>
       </TouchableOpacity>
